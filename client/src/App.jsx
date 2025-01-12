@@ -4,6 +4,9 @@ import Home from './pages/Home'
 import Register from './pages/Register'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
+import FarmerDashboard from './pages/FarmerDashboard';
 
 function App() {
 
@@ -15,6 +18,10 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/register' element={<Register/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/adminDashboard' element={<AdminDashboard/>}/>
+        <Route path='/adminDashboard' element={<AdminDashboard/>}/>
+        <Route path='/farmerDashboard' element={<FarmerDashboard/>}/>
       </Routes>
       </BrowserRouter>
     </>

@@ -7,13 +7,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const Login = () => {
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
-        name: "",
         email: "",
         password: "",
-        role: "farmer"
     });
 
     const handleChange = (e) => {
@@ -23,37 +21,30 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5000/api/users/register", formData);
-            toast.success("Registration successful!");
-            console.log(response.data);
-            navigate('/')
+            const response = await axios.post("http://localhost:5000/api/users/login", formData);
+            const { role } = response.data;
+            toast.success("Login successful!");
+            
+            if (role === 'admin') {
+                navigate('/adminDashboard');
+            } else if (role === 'farmer') {
+                navigate('/farmerDashboard');
+            } else {
+                navigate('/'); 
+            }
         } catch (error) {
-            toast.error(error.response?.data?.message || "Registration failed");
+            toast.error(error.response?.data?.message || "Login failed");
         }
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen p-4 bgImage">
-            
             <div className="w-full max-w-lg bg-slate-900 shadow-lg rounded-lg p-8 z-10 bg-opacity-100">
                 <h2 className="text-2xl font-bold text-center text-white mb-6">
                     Welcome to SenseGrass
                 </h2>
-                
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Name Field */}
-                    <LabelInputContainer>
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            placeholder="Enter your name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                        />
-                    </LabelInputContainer>
 
-                    {/* Email Field */}
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <LabelInputContainer>
                         <Label htmlFor="email">Email Address</Label>
                         <Input
@@ -66,7 +57,6 @@ const Register = () => {
                         />
                     </LabelInputContainer>
 
-                    {/* Password Field */}
                     <LabelInputContainer>
                         <Label htmlFor="password">Password</Label>
                         <Input
@@ -79,26 +69,11 @@ const Register = () => {
                         />
                     </LabelInputContainer>
 
-                    {/* Role Field */}
-                    <LabelInputContainer>
-                        <Label htmlFor="role">Role</Label>
-                        <select
-                            id="role"
-                            value={formData.role}
-                            onChange={handleChange}
-                            className="border p-2 rounded"
-                        >
-                            <option value="farmer">Farmer</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </LabelInputContainer>
-
-                    {/* Submit Button */}
                     <button
                         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
                         type="submit"
                     >
-                        Sign Up
+                        Log In
                         <BottomGradient />
                     </button>
                 </form>
@@ -109,22 +84,19 @@ const Register = () => {
 
 const BottomGradient = () => {
     return (
-      <>
-        <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-        <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-      </>
+        <>
+            <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+            <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+        </>
     );
-  };
-   
-  const LabelInputContainer = ({
-    children,
-    className,
-  }) => {
-    return (
-      <div className={cn("flex flex-col space-y-2 w-full", className)}>
-        {children}
-      </div>
-    );
-  }; 
+};
 
-export default Register
+const LabelInputContainer = ({ children, className }) => {
+    return (
+        <div className={cn("flex flex-col space-y-2 w-full", className)}>
+            {children}
+        </div>
+    );
+};
+
+export default Login;

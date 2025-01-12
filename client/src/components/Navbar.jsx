@@ -27,7 +27,7 @@ const Navbar = () => {
           <button className="px-4 py-2 bg-gradient-to-br from-pink-400 via-sky-400 to-purple-500 text-white rounded-full hover:opacity-90 transition duration-300 shadow-md" onClick={()=>navigate('/register')}>
             Register
           </button>
-          <button className="px-4 py-2 bg-gradient-to-br from-pink-400 via-sky-400 to-purple-500 text-white rounded-full hover:opacity-90 transition duration-300 shadow-md">
+          <button className="px-4 py-2 bg-gradient-to-br from-pink-400 via-sky-400 to-purple-500 text-white rounded-full hover:opacity-90 transition duration-300 shadow-md" onClick={()=>navigate('/login')}>
             Login
           </button>
         </div>

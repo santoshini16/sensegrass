@@ -23,3 +23,10 @@
   box-sizing: border-box;
   overflow-x: hidden;
 }
+
+.bgImage{
+  background-image: url('/register.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 50%;
+}
