@@ -1,8 +1,11 @@
 import React from 'react'
+import SidebarDemo from '../components/SidebarDashboard'
 
 const FarmerDashboard = () => {
   return (
-    <div>FarmerDashboard</div>
+    <div>
+    <SidebarDemo/>
+    </div>
   )
 }
 
