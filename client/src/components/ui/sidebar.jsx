@@ -1,4 +1,3 @@
-
 import { cn } from "../../lib/utils";
 import {Link} from "react-router-dom";
 import React, { useState, createContext, useContext } from "react";
@@ -24,12 +23,12 @@ export const SidebarProvider = ({
   const [openState, setOpenState] = useState(false);
 
   const open = openProp !== undefined ? openProp : openState;
-  const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
+  const setOpen = setOpenProp !== undefined ? setOpenProp : openState;
 
   return (
-    (<SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
+    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
       {children}
-    </SidebarContext.Provider>)
+    </SidebarContext.Provider>
   );
 };
 
@@ -40,9 +39,9 @@ export const Sidebar = ({
   animate
 }) => {
   return (
-    (<SidebarProvider open={open} setOpen={setOpen} animate={animate}>
+    <SidebarProvider open={open} setOpen={setOpen} animate={animate}>
       {children}
-    </SidebarProvider>)
+    </SidebarProvider>
   );
 };
 
@@ -62,7 +61,7 @@ export const DesktopSidebar = ({
   return (<>
     <motion.div
       className={cn(
-        "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] flex-shrink-0",
+        "h-full px-4 py-4 hidden  md:flex md:flex-col bg-gradient-to-br from-sky-400 via-pink-500 to-purple-600 w-[300px] flex-shrink-0",
         className
       )}
       animate={{
@@ -85,7 +84,7 @@ export const MobileSidebar = ({
   return (<>
     <div
       className={cn(
-        "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full"
+        "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-gradient-to-br from-sky-400 via-pink-500 to-purple-600 w-full"
       )}
       {...props}>
       <div className="flex justify-end z-20 w-full">
@@ -104,7 +103,7 @@ export const MobileSidebar = ({
               ease: "easeInOut",
             }}
             className={cn(
-              "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
+              "fixed h-full w-full inset-0 bg-gradient-to-br from-sky-400 via-pink-500 to-purple-600 p-10 z-[100] flex flex-col justify-between",
               className
             )}>
             <div
@@ -127,9 +126,9 @@ export const SidebarLink = ({
 }) => {
   const { open, animate } = useSidebar();
   return (
-    (<Link
+    <Link
       href={link.href}
-      className={cn("flex items-center justify-start gap-2  group/sidebar py-2", className)}
+      className={cn("flex items-center justify-start gap-2 group/sidebar py-2", className)}
       {...props}>
       {link.icon}
       <motion.span
@@ -140,6 +139,7 @@ export const SidebarLink = ({
         className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0">
         {link.label}
       </motion.span>
-    </Link>)
+    </Link>
   );
 };
+

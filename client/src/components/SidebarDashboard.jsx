@@ -3,8 +3,9 @@ import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import {
   IconArrowLeft,
   IconBrandTabler,
-  IconSettings,
+  IconRobotFace,
   IconUserBolt,
+  IconCirclePlus
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -21,17 +22,17 @@ export default function SidebarDemo() {
       ),
     },
     {
-      label: "Profile",
+      label: "Add Field",
       href: "#",
       icon: (
-        <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconCirclePlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Settings",
+      label: "AI Insight",
       href: "#",
       icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconRobotFace className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
