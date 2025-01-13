@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "../lib/utils";
 import Dashboard from "./Dashboard";
-import FieldModal from "../components/FieldModal"; // Import FieldModal component
+import FieldModal from "../components/FieldModal"; 
 
 export default function SidebarDemo() {
   const [open, setOpen] = useState(false);
@@ -31,7 +31,7 @@ export default function SidebarDemo() {
       icon: (
         <IconCirclePlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
-      onClick: () => setModalOpen(true), // Open modal when clicked
+      onClick: () => setModalOpen(true), 
     },
     {
       label: "AI Insight",
