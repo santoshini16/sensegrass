@@ -11,4 +11,4 @@ router.get('/fields', getAllFields);
 router.put('/fields/:id', updateField);
 router.delete('/fields/:id', deleteField);
 
-export default router;
+module.exports = router;

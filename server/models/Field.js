@@ -31,4 +31,4 @@ const FieldSchema = new mongoose.Schema({
 });
 
 const Field = mongoose.model('Field', FieldSchema);
-export default Field;
+module.exports = Field
