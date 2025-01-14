@@ -28,12 +28,13 @@ const calculateYieldEstimate = (healthStatus) => {
     }
 };
 
-// AI Analysis Controller
-const generateAIAnalysis = async (req, res) => {
-    const { fieldId } = req.params;
+// AI Analysis Controller with fieldName instead of fieldId
+const generateAIAnalysisByFieldName = async (req, res) => {
+    const { fieldName } = req.body;  // Now using fieldName from the request body
 
     try {
-        const field = await Field.findById(fieldId);
+        // Find the field by its name
+        const field = await Field.findOne({ fieldName });
         if (!field) {
             return res.status(404).json({ message: "Field not found" });
         }
@@ -61,9 +62,9 @@ const generateAIAnalysis = async (req, res) => {
 
         const yieldEstimate = calculateYieldEstimate(healthStatus);
 
-        // Create and save the AI analysis entry
+        // Save the AI analysis entry using the found fieldId
         const aiAnalysis = new AIAnalysis({
-            fieldId,
+            fieldId: field._id,
             soilHealth: soilHealthData,
             cropHealth: {
                 healthStatus,
@@ -79,18 +80,28 @@ const generateAIAnalysis = async (req, res) => {
     }
 };
 
-// Fetch AI analysis by field ID
-const getAIAnalysisByField = async (req, res) => {
-    const { fieldId } = req.params;
+// Fetch AI analysis using fieldName
+const getAIAnalysisByFieldName = async (req, res) => {
+    const { fieldName } = req.body;
+
     try {
-        const analysis = await AIAnalysis.find({ fieldId }).populate('fieldId');
+        // Find the field by its name
+        const field = await Field.findOne({ fieldName });
+        if (!field) {
+            return res.status(404).json({ message: "Field not found" });
+        }
+
+        // Fetch AI Analysis linked to this field
+        const analysis = await AIAnalysis.find({ fieldId: field._id }).populate('fieldId');
         if (!analysis.length) {
             return res.status(404).json({ message: "No AI analysis found for this field" });
         }
         res.status(200).json(analysis);
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-module.exports = { generateAIAnalysis, getAIAnalysisByField };
+module.exports = { generateAIAnalysisByFieldName, getAIAnalysisByFieldName };
+

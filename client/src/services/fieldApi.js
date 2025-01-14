@@ -10,6 +10,7 @@ export const createField = async (fieldData) => {
 
 export const getAllFields = async () => {
     const response = await axios.get(API_URL);
+    console.log(response)
     return response.data;
 };
 
