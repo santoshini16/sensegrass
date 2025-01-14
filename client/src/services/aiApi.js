@@ -13,3 +13,15 @@ export const generateAIAnalysis = async (fieldName) => {
         throw error;
     }
 };
+
+export const getAIAnalysisByFieldName = async (fieldName) => {
+    try {
+        const response = await axios.get(`${API_URL}/results`, {
+            params: { fieldName }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching AI analysis:', error);
+        throw error;
+    }
+};

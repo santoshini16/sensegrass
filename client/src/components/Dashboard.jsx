@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllFields, deleteField } from '../services/fieldApi';
 import { motion } from 'framer-motion';
 import FieldModal from './FieldModal'; 
+import AiReport from './AiReport';
 
 const Dashboard = () => {
   const [fields, setFields] = useState([]);
@@ -113,9 +114,8 @@ const Dashboard = () => {
             )}
           </div>
         )}
+         <AiReport/>
       </div>
-
-      
       <FieldModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)} 
