@@ -11,11 +11,13 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "../lib/utils";
 import Dashboard from "./Dashboard";
-import FieldModal from "../components/FieldModal"; 
+import FieldModal from "../components/FieldModal";
+import AiInsightModal from "../components/AiInsightModal"; // New AI Insight Modal Component
 
 export default function SidebarDemo() {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isAiModalOpen, setAiModalOpen] = useState(false); // New state for AI Insight modal
 
   const links = [
     {
@@ -31,7 +33,7 @@ export default function SidebarDemo() {
       icon: (
         <IconCirclePlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
-      onClick: () => setModalOpen(true), 
+      onClick: () => setModalOpen(true),
     },
     {
       label: "AI Insight",
@@ -39,6 +41,7 @@ export default function SidebarDemo() {
       icon: (
         <IconRobotFace className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
+      onClick: () => setAiModalOpen(true), // Open AI Insight modal
     },
     {
       label: "Logout",
@@ -62,11 +65,7 @@ export default function SidebarDemo() {
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
-                <SidebarLink
-                  key={idx}
-                  link={link}
-                  onClick={link.onClick}
-                />
+                <SidebarLink key={idx} link={link} onClick={link.onClick} />
               ))}
             </div>
           </div>
@@ -92,9 +91,16 @@ export default function SidebarDemo() {
         onClose={() => setModalOpen(false)}
         onFieldAdded={() => setModalOpen(false)}
       />
+
+      {/* AI Insight Modal Component */}
+      <AiInsightModal
+        isOpen={isAiModalOpen}
+        onClose={() => setAiModalOpen(false)}
+      />
     </div>
   );
 }
+
 
 export const Logo = () => {
   return (

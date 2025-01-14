@@ -1,0 +1,15 @@
+// services/aiApi.js
+import axios from 'axios';
+
+const API_URL = 'http://localhost:5000/api/ai';
+
+// Generate AI insights by field name
+export const generateAIAnalysis = async (fieldName) => {
+    try {
+        const response = await axios.post(`${API_URL}/analyze`, { fieldName });
+        return response.data;
+    } catch (error) {
+        console.error('Error calling AI analysis API:', error);
+        throw error;
+    }
+};
