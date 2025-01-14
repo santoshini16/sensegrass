@@ -7,7 +7,8 @@ const { generateAIAnalysisByFieldName, getAIAnalysisByFieldName } = require('../
 router.post('/analyze', generateAIAnalysisByFieldName);
 
 
-router.get('/results', getAIAnalysisByFieldName);
+router.get('/results/:fieldName', getAIAnalysisByFieldName);
+
 
 module.exports = router;
 

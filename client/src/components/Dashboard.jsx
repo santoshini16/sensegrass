@@ -53,7 +53,7 @@ const Dashboard = () => {
     <div className="flex flex-1">
       <div className="p-6 md:p-12 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-gradient-to-br from-green-100 to-green-300 flex flex-col gap-6 flex-1 w-full h-full">
         {/* Welcome Message */}
-        <div className="text-center mb-6">
+        <div className="text-center h-60 md:h-16">
           <h1 className="text-2xl font-extrabold text-green-800 dark:text-green-600">
             Welcome to the Field Management Dashboard
           </h1>
@@ -77,7 +77,7 @@ const Dashboard = () => {
               fields.map((field) => (
                 <motion.div
                   key={field._id}
-                  className="bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white shadow-lg rounded-lg p-3 border border-neutral-200 dark:border-neutral-700"
+                  className="bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white shadow-lg rounded-lg p-3 border border-neutral-200 dark:border-neutral-700 h-[220px]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}

@@ -82,7 +82,7 @@ const generateAIAnalysisByFieldName = async (req, res) => {
 
 // Fetch AI analysis using fieldName
 const getAIAnalysisByFieldName = async (req, res) => {
-    const { fieldName } = req.body;
+    const { fieldName } = req.params;
 
     try {
         // Find the field by its name

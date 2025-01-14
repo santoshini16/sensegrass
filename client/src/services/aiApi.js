@@ -16,9 +16,8 @@ export const generateAIAnalysis = async (fieldName) => {
 
 export const getAIAnalysisByFieldName = async (fieldName) => {
     try {
-        const response = await axios.get(`${API_URL}/results`, {
-            params: { fieldName }
-        });
+        const response = await axios.get(`${API_URL}/results/${fieldName}`);
+
         return response.data;
     } catch (error) {
         console.error('Error fetching AI analysis:', error);
