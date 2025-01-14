@@ -26,7 +26,6 @@ const Dashboard = () => {
   }, []);
 
   const handleEdit = (fieldId) => {
-    
     const fieldToEdit = fields.find((field) => field._id === fieldId);
     setCurrentField(fieldToEdit);
     setIsModalOpen(true); 
@@ -35,7 +34,6 @@ const Dashboard = () => {
   const handleDelete = async (fieldId) => {
     try {
       await deleteField(fieldId);
-      
       setFields(fields.filter((field) => field._id !== fieldId));
     } catch (error) {
       console.error('Error deleting field:', error);
@@ -43,17 +41,15 @@ const Dashboard = () => {
   };
 
   const handleFieldAdded = (newField) => {
-    // Immediately update the fields state with the new field
     setFields((prevFields) => [...prevFields, newField]);
     setLoading(false); // Stop the loading spinner
   };
-  
 
   return (
-    <div className="flex flex-1">
-      <div className="p-6 md:p-12 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-gradient-to-br from-green-100 to-green-300 flex flex-col gap-6 flex-1 w-full h-full">
+    <div className="flex flex-1 min-h-screen overflow-hidden"> {/* Parent div to ensure full height */}
+      <div className="p-6 md:p-12 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-gradient-to-br from-green-100 to-green-300 flex flex-col gap-6 flex-1 w-full overflow-auto"> {/* Overflow set for scrolling */}
         {/* Welcome Message */}
-        <div className="text-center h-60 md:h-16">
+        <div className="text-center h-28">
           <h1 className="text-2xl font-extrabold text-green-800 dark:text-green-600">
             Welcome to the Field Management Dashboard
           </h1>
@@ -63,12 +59,13 @@ const Dashboard = () => {
         </div>
 
         {/* Fields Data */}
+        <div className='h-[20rem] overflow-auto'>
         {loading ? (
           <div className="flex justify-center items-center h-48">
             <p className="text-xl text-gray-600 dark:text-gray-300">Loading fields...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-auto"> {/* Allow scroll on the grid */}
             {fields.length === 0 ? (
               <div className="flex justify-center items-center w-full h-48">
                 <p className="text-xl text-gray-600 dark:text-gray-300">No fields found.</p>
@@ -77,7 +74,7 @@ const Dashboard = () => {
               fields.map((field) => (
                 <motion.div
                   key={field._id}
-                  className="bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white shadow-lg rounded-lg p-3 border border-neutral-200 dark:border-neutral-700 h-[220px]"
+                  className="bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white shadow-lg rounded-lg p-3 border border-neutral-200 dark:border-neutral-700"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
@@ -86,7 +83,7 @@ const Dashboard = () => {
                   <p className="text-lg text-gray-300">
                     <strong>Crop Type:</strong> {field.cropType}
                   </p>
-                  <p className="text-lg text-gray-300 ">
+                  <p className="text-lg text-gray-300">
                     <strong>Location:</strong> Lat: {field.location.latitude}, Lng: {field.location.longitude}
                   </p>
                   <p className="text-lg text-gray-300">
@@ -114,7 +111,9 @@ const Dashboard = () => {
             )}
           </div>
         )}
-         <AiReport/>
+        </div>
+        <AiReport />
+
       </div>
       <FieldModal 
         isOpen={isModalOpen}
@@ -127,6 +126,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
 
 
