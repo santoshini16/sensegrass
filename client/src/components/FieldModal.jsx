@@ -95,10 +95,11 @@ const FieldModal = ({ isOpen, onClose, onFieldAdded, fieldData }) => {
         });
       }
   
-      // Immediately add the new field to the state in Dashboard
-      onFieldAdded(newField); // Pass the new field directly to the dashboard
+      
+      onFieldAdded(newField); 
   
       onClose();
+      
     } catch (error) {
       console.error('Error saving field:', error);
     }

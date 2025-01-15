@@ -1,11 +1,12 @@
 // controllers/aiController.js
 const AIAnalysis = require('../models/AIAnalysis');
 const Field = require('../models/Field');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Utility function to generate random values within a range
+
 const generateRandom = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
-// Generate health status based on soil health
+
 const getHealthStatus = (phLevel, moisture, nitrogen, phosphorus, potassium) => {
     if (phLevel >= 6 && phLevel <= 7 &&
         moisture >= 40 && moisture <= 70 &&
@@ -18,7 +19,7 @@ const getHealthStatus = (phLevel, moisture, nitrogen, phosphorus, potassium) => 
     return "Moderate";
 };
 
-// Generate yield estimate based on health status
+
 const calculateYieldEstimate = (healthStatus) => {
     switch (healthStatus) {
         case "Optimal": return generateRandom(80, 100);
@@ -28,18 +29,18 @@ const calculateYieldEstimate = (healthStatus) => {
     }
 };
 
-// AI Analysis Controller with fieldName instead of fieldId
+
 const generateAIAnalysisByFieldName = async (req, res) => {
-    const { fieldName } = req.body;  // Now using fieldName from the request body
+    const { fieldName } = req.body;  
 
     try {
-        // Find the field by its name
+       
         const field = await Field.findOne({ fieldName });
         if (!field) {
             return res.status(404).json({ message: "Field not found" });
         }
 
-        // Simulate soil health data
+        
         const soilHealthData = {
             phLevel: generateRandom(5, 8),
             moistureLevel: generateRandom(30, 80),
@@ -51,7 +52,7 @@ const generateAIAnalysisByFieldName = async (req, res) => {
             }
         };
 
-        // Determine crop health and yield estimate
+     
         const healthStatus = getHealthStatus(
             soilHealthData.phLevel, 
             soilHealthData.moistureLevel, 
@@ -62,7 +63,7 @@ const generateAIAnalysisByFieldName = async (req, res) => {
 
         const yieldEstimate = calculateYieldEstimate(healthStatus);
 
-        // Save the AI analysis entry using the found fieldId
+        
         const aiAnalysis = new AIAnalysis({
             fieldId: field._id,
             soilHealth: soilHealthData,
@@ -80,28 +81,57 @@ const generateAIAnalysisByFieldName = async (req, res) => {
     }
 };
 
-// Fetch AI analysis using fieldName
+
 const getAIAnalysisByFieldName = async (req, res) => {
     const { fieldName } = req.params;
 
     try {
-        // Find the field by its name
         const field = await Field.findOne({ fieldName });
         if (!field) {
             return res.status(404).json({ message: "Field not found" });
         }
 
-        // Fetch AI Analysis linked to this field
         const analysis = await AIAnalysis.find({ fieldId: field._id }).populate('fieldId');
         if (!analysis.length) {
-            return res.status(404).json({ message: "No AI analysis found for this field" });
+            return res.status(404).json({ message: "No AI analysis found for this field, Enter your Field name" });
         }
-        res.status(200).json(analysis);
+
+        const latestAnalysis = analysis[0];
+        const genAI = new GoogleGenerativeAI(`${process.env.GOOGLEAI_API}`);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+         
+        const prompt = `
+        Analyze the following agricultural data and provide insights:
+        Soil Health:
+        - pH Level: ${latestAnalysis.soilHealth.phLevel}
+        - Moisture Level: ${latestAnalysis.soilHealth.moistureLevel}%
+        - Nitrogen: ${latestAnalysis.soilHealth.nutrients.nitrogen}
+        - Phosphorus: ${latestAnalysis.soilHealth.nutrients.phosphorus}
+        - Potassium: ${latestAnalysis.soilHealth.nutrients.potassium}
+        Crop Health:
+        - Crop Type: ${latestAnalysis.fieldId.cropType}
+        - Health Status: ${latestAnalysis.cropHealth.healthStatus}
+        - Yield Estimate: ${latestAnalysis.cropHealth.yieldEstimate}%
+        
+        Provide insights on soil and crop health and give detailed recommendations for improvement.
+        `;
+
+        const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+        });
+
+        res.status(200).json({
+          success: true,
+          analysis: latestAnalysis,
+          message: "AI has replied",
+          insights: result.response.text(),
+        });
 
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 module.exports = { generateAIAnalysisByFieldName, getAIAnalysisByFieldName };
 

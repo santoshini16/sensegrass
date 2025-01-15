@@ -6,8 +6,10 @@ import {
   IconRobotFace,
   IconUserBolt,
   IconCirclePlus,
+  IconChartBar,
+  IconShoppingCartDollar
 } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "../lib/utils";
 import Dashboard from "./Dashboard";
@@ -17,7 +19,18 @@ import AiInsightModal from "../components/AiInsightModal"; // New AI Insight Mod
 export default function SidebarDemo() {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isAiModalOpen, setAiModalOpen] = useState(false); // New state for AI Insight modal
+  const [isAiModalOpen, setAiModalOpen] = useState(false);
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    setOpen(false); 
+    setModalOpen(false); 
+    setAiModalOpen(false);
+    localStorage.removeItem("userData");
+    localStorage.removeItem("token");
+    navigate("/", { replace: true });
+    window.location.reload(); 
+};
+
 
   const links = [
     {
@@ -41,7 +54,23 @@ export default function SidebarDemo() {
       icon: (
         <IconRobotFace className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
-      onClick: () => setAiModalOpen(true), // Open AI Insight modal
+      onClick: () => setAiModalOpen(true), 
+    },
+    {
+      label: "Data Visual",
+      href: "#",
+      icon: (
+        <IconChartBar className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+      onClick: () => setAiModalOpen(true), 
+    },
+    {
+      label: "Pricing",
+      href: "#",
+      icon: (
+        <IconShoppingCartDollar className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+      onClick: () => setAiModalOpen(true), 
     },
     {
       label: "Logout",
@@ -49,6 +78,7 @@ export default function SidebarDemo() {
       icon: (
         <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
+      onClick:()=>handleLogout(),
     },
   ];
 
@@ -56,7 +86,7 @@ export default function SidebarDemo() {
     <div
       className={cn(
         "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 max-w-8xl mx-auto border border-neutral-200 dark:border-neutral-700",
-        "h-[200vh]"
+        "h-[100vh]"
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>

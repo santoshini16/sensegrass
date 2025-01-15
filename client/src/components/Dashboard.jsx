@@ -46,10 +46,10 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-1 min-h-screen overflow-hidden"> {/* Parent div to ensure full height */}
-      <div className="p-6 md:p-12 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-gradient-to-br from-green-100 to-green-300 flex flex-col gap-6 flex-1 w-full overflow-auto"> {/* Overflow set for scrolling */}
+    <div className="flex flex-1"> {/* Parent div to ensure full height */}
+      <div className="p-6 md:p-12 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-gradient-to-br from-green-100 to-green-300 flex flex-col gap-6 flex-1 w-full h-full"> {/* Overflow set for scrolling */}
         {/* Welcome Message */}
-        <div className="text-center h-28">
+        <div className="text-center h-32 ">
           <h1 className="text-2xl font-extrabold text-green-800 dark:text-green-600">
             Welcome to the Field Management Dashboard
           </h1>
@@ -59,7 +59,7 @@ const Dashboard = () => {
         </div>
 
         {/* Fields Data */}
-        <div className='h-[20rem] overflow-auto'>
+        <div className='h-full'>
         {loading ? (
           <div className="flex justify-center items-center h-48">
             <p className="text-xl text-gray-600 dark:text-gray-300">Loading fields...</p>
@@ -112,7 +112,6 @@ const Dashboard = () => {
           </div>
         )}
         </div>
-        <AiReport />
 
       </div>
       <FieldModal 

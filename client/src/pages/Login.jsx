@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -22,15 +22,21 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5000/api/users/login", formData);
-            const { role } = response.data;
+            console.log(response.data)
+            const { role, token, ...userData } = response.data;
+
+            // Store user data in localStorage
+            localStorage.setItem('userData', JSON.stringify(userData));
+            localStorage.setItem('token', token);
+
             toast.success("Login successful!");
-            
+
             if (role === 'admin') {
                 navigate('/adminDashboard');
             } else if (role === 'farmer') {
                 navigate('/farmerDashboard');
             } else {
-                navigate('/'); 
+                navigate('/');
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed");

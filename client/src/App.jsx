@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import FarmerDashboard from './pages/FarmerDashboard';
+import AiReport from './components/AiReport';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path='/adminDashboard' element={<AdminDashboard/>}/>
         <Route path='/adminDashboard' element={<AdminDashboard/>}/>
         <Route path='/farmerDashboard' element={<FarmerDashboard/>}/>
+        <Route path='/aireport' element={<AiReport/>}/>
       </Routes>
       </BrowserRouter>
     </>

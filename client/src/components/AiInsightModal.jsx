@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { generateAIAnalysis } from '../services/aiApi';
+import { useNavigate } from 'react-router-dom';
 
 const AiInsightModal = ({ isOpen, onClose, onResultSubmit }) => {
     const [fieldName, setFieldName] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             const result = await generateAIAnalysis(fieldName);
-            onResultSubmit(result); 
+            
+            navigate("/aireport", { state: { result } });
+            window.location.reload(); 
         } catch (error) {
             console.error('Error fetching AI insights:', error);
         } finally {
