@@ -102,7 +102,7 @@ const AiReport = () => {
                         <p><strong>Yield Estimate:</strong> {analysisResult?.analysis?.cropHealth?.yieldEstimate}%</p>
                     </div>
                 )}
-            </div>
+                 </div>
             </div>
             {analysisResult && (
                 <div className="bg-gradient-to-br from-blue-600 via-slate-600 to-slate-500 p-6 rounded-lg shadow-lg mb-4">

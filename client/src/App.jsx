@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import FarmerDashboard from './pages/FarmerDashboard';
 import AiReport from './components/AiReport';
+import AiChartReport from './components/AiChartReport';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path='/adminDashboard' element={<AdminDashboard/>}/>
         <Route path='/farmerDashboard' element={<FarmerDashboard/>}/>
         <Route path='/aireport' element={<AiReport/>}/>
+        <Route path='/aichart' element={<AiChartReport/>}/>
       </Routes>
       </BrowserRouter>
     </>
