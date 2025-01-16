@@ -101,10 +101,8 @@ CLIENT_URL=http://localhost:5173
 │   ├── paymentRoutes.js
 │   └── userRoutes.js
 ├── .env
-├── server.js
-├── vite.config.js
+├── index.js
 ├── package.json
-└── README.md
 ```
 
 ## License
