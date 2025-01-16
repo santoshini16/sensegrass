@@ -16,8 +16,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-app.options('*', cors());
-// Body parsing middleware (Express built-in)
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

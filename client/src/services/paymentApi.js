@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 
-const API_BASE_URL = 'http://localhost:5000/api/payments';
+const API_BASE_URL = 'https://sensegrass-69dv.onrender.com/api/payments';
 
 // Initialize Stripe
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);

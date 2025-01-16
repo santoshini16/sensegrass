@@ -1,7 +1,7 @@
 // services/aiApi.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/ai';
+const API_URL = 'https://sensegrass-69dv.onrender.com/api/ai';
 
 // Generate AI insights by field name
 export const generateAIAnalysis = async (fieldName) => {
