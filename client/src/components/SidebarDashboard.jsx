@@ -35,6 +35,11 @@ const handleData = ()=>{
   window.location.reload(); 
 }
 
+const handlePricing=()=>{
+  navigate("/pricing",{ replace: true })
+  window.location.reload(); 
+}
+
 
   const links = [
     {
@@ -74,7 +79,7 @@ const handleData = ()=>{
       icon: (
         <IconShoppingCartDollar className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
-      onClick: () => setAiModalOpen(true), 
+      onClick: () => handlePricing(), 
     },
     {
       label: "Logout",

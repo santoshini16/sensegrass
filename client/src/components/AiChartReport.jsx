@@ -94,7 +94,7 @@ const AiChartReport = () => {
 
             {analysisResult && (
                 <>
-                 <button
+                      <button
                             onClick={() => navigate('/farmerdashboard')}
                             className=" absolute top-10 right-12 p-3 rounded-lg bg-transparent border text-white font-semibold hover:bg-green-600 mt-4"
                         >
