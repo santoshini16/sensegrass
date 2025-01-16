@@ -105,7 +105,5 @@ CLIENT_URL=http://localhost:5173
 ├── package.json
 ```
 
-## License
-This project is licensed under the MIT License.
 
 
