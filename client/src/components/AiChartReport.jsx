@@ -5,6 +5,9 @@ import { getAIAnalysisByFieldName } from '../services/aiApi';
 import { useNavigate } from 'react-router-dom';
 
 const COLORS = ['#4A90E2', '#50E3C2', '#F5A623'];
+const HEALTH_STATUS_COLORS = { Optimal: '#50E3C2', Moderate: '#F5A623', Poor: '#E94E77' };
+const ENVIRONMENTAL_COLORS = { 'pH Level': '#4A90E2', 'Moisture Level': '#50E3C2', 'Temperature': '#F5A623' };
+const YIELD_ESTIMATE_COLORS = ['#4A90E2', '#50E3C2', '#F5A623'];
 
 const AiChartReport = () => {
     const [fieldName, setFieldName] = useState('');
@@ -26,6 +29,7 @@ const AiChartReport = () => {
         try {
             const result = await getAIAnalysisByFieldName(fieldName);
             setAnalysisResult(result);
+            console.log('result chart:', result);
         } catch (err) {
             setError(err.message || 'Failed to fetch AI analysis. Please try again.');
         } finally {
@@ -33,19 +37,26 @@ const AiChartReport = () => {
         }
     };
 
-    const soilHealthData = analysisResult?.[0]?.analysis?.soilHealth || {};
-    const cropHealthData = analysisResult?.[0]?.analysis?.cropHealth || {};
+    const soilHealthData = analysisResult?.analysis?.soilHealth || {};
+    const cropHealthData = analysisResult?.analysis?.cropHealth || {};
 
-    const soilData = [
-        { name: 'Nutrients', value: soilHealthData.nutrients || 0 },
+    const nutrientsData = soilHealthData.nutrients ? Object.entries(soilHealthData.nutrients).map(([key, value]) => ({
+        name: key,
+        value,
+    })) : [];
+
+    const environmentalData = [
         { name: 'pH Level', value: soilHealthData.phLevel || 0 },
-        { name: 'Moisture', value: soilHealthData.moistureLevel || 0 },
-        { name: 'Temperature', value: soilHealthData.temperature || 0 },
+        { name: 'Moisture Level', value: soilHealthData.moistureLevel || 0 },
+        { name: 'Temperature', value: soilHealthData.temperature || 0 }
     ];
 
-    const cropData = [
-        { name: 'Yield Status', value: cropHealthData.yield || 0 },
-        { name: 'Health Status', value: cropHealthData.healthStatus || 0 },
+    const healthStatusData = [
+        { name: cropHealthData.healthStatus || 'Unknown', value: 100 }
+    ];
+
+    const yieldEstimateData = [
+        { name: 'Yield Estimate', value: cropHealthData.yieldEstimate || 0 }
     ];
 
     return (
@@ -80,35 +91,59 @@ const AiChartReport = () => {
             </div>
 
             {analysisResult && (
+                <>
+                 <button
+                            onClick={() => navigate('/farmerdashboard')}
+                            className=" absolute top-10 right-12 p-3 rounded-lg bg-transparent border text-white font-semibold hover:bg-green-600 mt-4"
+                        >
+                            Go Back
+                        </button>
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8"
                 >
-                    {/* Soil Health Bar Chart */}
+                     
                     <div className="border border-gray-300 rounded-lg p-5">
-                        <h3 className="text-lg font-semibold mb-4">Soil Health Overview</h3>
+                        <h3 className="text-lg font-semibold mb-4">Nutrients Overview</h3>
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={soilData}>
+                            <LineChart data={nutrientsData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="name" />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="value" fill="#4A90E2" />
+                                <Line type="monotone" dataKey="value" stroke="#4A90E2" />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+
+                    <div className="border border-gray-300 rounded-lg p-5">
+                        <h3 className="text-lg font-semibold mb-4">Environmental Factors</h3>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={environmentalData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="value">
+                                    {environmentalData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={ENVIRONMENTAL_COLORS[entry.name]} />
+                                    ))}
+                                </Bar>
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
 
-                    {/* Crop Health Pie Chart */}
                     <div className="border border-gray-300 rounded-lg p-5">
-                        <h3 className="text-lg font-semibold mb-4">Crop Health Status</h3>
+                        <h3 className="text-lg font-semibold mb-4">Health Status</h3>
                         <ResponsiveContainer width="100%" height={300}>
                             <PieChart>
-                                <Pie data={cropData} dataKey="value" nameKey="name" outerRadius={120}>
-                                    {COLORS.map((color, index) => (
-                                        <Cell key={`cell-${index}`} fill={color} />
+                                <Pie data={healthStatusData} dataKey="value" nameKey="name" outerRadius={120}>
+                                    {healthStatusData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={HEALTH_STATUS_COLORS[entry.name] || '#8884d8'} />
                                     ))}
                                 </Pie>
                                 <Tooltip />
@@ -117,27 +152,32 @@ const AiChartReport = () => {
                         </ResponsiveContainer>
                     </div>
 
-                    {/* Soil Health Line Chart */}
                     <div className="border border-gray-300 rounded-lg p-5">
-                        <h3 className="text-lg font-semibold mb-4">Soil Health Over Time</h3>
+                        <h3 className="text-lg font-semibold mb-4">Yield Estimate</h3>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={soilData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
+                            <PieChart>
+                                <Pie data={yieldEstimateData} dataKey="value" nameKey="name" outerRadius={120}>
+                                    {yieldEstimateData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={YIELD_ESTIMATE_COLORS[index % YIELD_ESTIMATE_COLORS.length]} />
+                                    ))}
+                                </Pie>
                                 <Tooltip />
                                 <Legend />
-                                <Line type="monotone" dataKey="value" stroke="#F5A623" />
-                            </LineChart>
+                            </PieChart>
                         </ResponsiveContainer>
                     </div>
                 </motion.div>
+                </>
             )}
         </div>
     );
 };
 
 export default AiChartReport;
+
+
+
+
 
 
 
