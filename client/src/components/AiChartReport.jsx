@@ -61,11 +61,12 @@ const AiChartReport = () => {
 
     return (
         <div className="flex flex-col justify-center p-8">
-            <div className="bg-gradient-to-br from-blue-600 via-slate-600 to-slate-500 rounded-lg p-8 shadow-2xl">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Soil & Crop Health Data</h2>
+            <div className=" rounded-lg p-8 shadow-2xlv">
+                <h2 className="text-2xl font-semibold text-white text-center mb-4">Soil & Crop Health Data</h2>
                 {!analysisResult && (
                     <>
-                        <input
+                       <div className='bg-gradient-to-br from-blue-600 via-slate-600 to-slate-500 flex flex-col justify-center items-center m-auto w-[400px] p-10 border rounded-lg shadow-xl'>
+                       <input
                             type="text"
                             value={fieldName}
                             onChange={handleInputChange}
@@ -85,6 +86,7 @@ const AiChartReport = () => {
                         >
                             Go Back
                         </button>
+                       </div>
                     </>
                 )}
                 {error && <p className="text-red-500 mt-3">{error}</p>}
@@ -104,18 +106,18 @@ const AiChartReport = () => {
                     transition={{ duration: 0.5 }}
                     className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8"
                 >
-                     
                     <div className="border border-gray-300 rounded-lg p-5">
-                        <h3 className="text-lg font-semibold mb-4">Nutrients Overview</h3>
+                        <h3 className="text-lg font-semibold mb-4">Health Status</h3>
                         <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={nutrientsData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
+                            <PieChart>
+                                <Pie data={healthStatusData} dataKey="value" nameKey="name" outerRadius={120}>
+                                    {healthStatusData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={HEALTH_STATUS_COLORS[entry.name] || '#8884d8'} />
+                                    ))}
+                                </Pie>
                                 <Tooltip />
                                 <Legend />
-                                <Line type="monotone" dataKey="value" stroke="#4A90E2" />
-                            </LineChart>
+                            </PieChart>
                         </ResponsiveContainer>
                     </div>
 
@@ -138,17 +140,16 @@ const AiChartReport = () => {
                     </div>
 
                     <div className="border border-gray-300 rounded-lg p-5">
-                        <h3 className="text-lg font-semibold mb-4">Health Status</h3>
+                        <h3 className="text-lg font-semibold mb-4">Nutrients Overview</h3>
                         <ResponsiveContainer width="100%" height={300}>
-                            <PieChart>
-                                <Pie data={healthStatusData} dataKey="value" nameKey="name" outerRadius={120}>
-                                    {healthStatusData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={HEALTH_STATUS_COLORS[entry.name] || '#8884d8'} />
-                                    ))}
-                                </Pie>
+                            <LineChart data={nutrientsData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
                                 <Tooltip />
                                 <Legend />
-                            </PieChart>
+                                <Line type="monotone" dataKey="value" stroke="#4A90E2" />
+                            </LineChart>
                         </ResponsiveContainer>
                     </div>
 
