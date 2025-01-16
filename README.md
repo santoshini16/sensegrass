@@ -1,7 +1,7 @@
 # SenseGrass Project
 
 ## Project Overview
-SenseGrass is a Vite-based agricultural analysis platform that leverages AI insights for soil and crop health management. It includes features for field management, AI-based analysis, user authentication, and payment integration.
+SenseGrass is an agricultural analysis platform that leverages AI insights for soil and crop health management. It includes features for field management, AI-based analysis, user authentication, and payment integration.
 
 ## Features
 - **Field Management:** Create, update, delete, and retrieve agricultural fields.
